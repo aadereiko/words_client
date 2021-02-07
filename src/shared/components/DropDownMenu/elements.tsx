@@ -48,13 +48,14 @@ export const DropDownMenuContainerElement = styled.div`
     z-index: 10;
     background-color: white;
     animation: ${menuAppearing} 0.5s;
-    box-shadow: 0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px 0 rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05);
-
+    border-radius: 10px;
+    padding: 5px 10px;
 `
 
 
 export const DropDownMenuItemElement = styled.div`
-    padding: 10px;
+    padding: 10px 2px;
+    width: 100%;
     /* border-bottom: 1px solid ${generalStyles.lighterPrimaryBlueColor}; */
 
     &:first-child {
@@ -67,7 +68,7 @@ export const DropDownMenuItemElement = styled.div`
     }
 
     &:hover {
-        background-color: #fbfbfb;
         cursor: pointer;
+        color: ${generalStyles.lighterPrimaryBlueColor};
     };
 `

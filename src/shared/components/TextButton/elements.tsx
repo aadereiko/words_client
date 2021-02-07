@@ -1,17 +1,25 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import generalStyles from "../../styles/general";
 
-const generalStyle = `
-    color: ${generalStyles.primaryBlueColor};
-    cursor: pointer;
-    padding: 15px;
+export interface ITextButtonProps {
+    disabled: boolean;
+}
 
+export const TextButtonElement = styled.span`
+    cursor: ${(props: ITextButtonProps) => props.disabled ? 'default' : 'pointer'};
+    padding: 15px;
+    color: ${(props: ITextButtonProps) => props.disabled ? generalStyles.grayPrimaryColor : generalStyles.primaryBlueColor};
     &:hover {
-        color: ${generalStyles.lighterPrimaryBlueColor};
-    }
+        color:  ${(props: ITextButtonProps) => props.disabled ? generalStyles.grayPrimaryColor : generalStyles.lighterPrimaryBlueColor};
+    };
 `;
 
-export const TextButtonElement = styled.span`${generalStyle}`;
-export const TextLinkElement = styled.a`${generalStyle}
+
+export const TextLinkElement = styled(Link)`
+    text-decoration: none;
+    `;
+
+export const ExternalTextLinkElement = styled.a`
     text-decoration: none;
     `;

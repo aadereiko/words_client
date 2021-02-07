@@ -3,3 +3,10 @@
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: #31708f;
 }
+
+html,
+body,
+div#root {
+  margin: 0;
+  height: 100%;
+}

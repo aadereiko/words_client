@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useRef } from 'react';
 import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
 import { useOutsideClickCheck } from '../../hooks/outsideClick';
+import ZIndexLayer from '../ZIndexLayer';
 import { DropDownMenuItem } from './DropDownMenuItem';
 import { DropDownHeaderElement, DropDownHeaderTextElement, DropDownMenuContainerElement, IconContainerElement, DropDownHeaderContainerElement } from './elements';
 
@@ -15,19 +16,23 @@ export const DropDownMenu: React.FC<IDropDownMenu> = ({ icon, headerText, childr
     const toggleOpened = useCallback(() => { setOpened(isOpened => !isOpened) }, [setOpened]);
     const closeDropdownIfOpened = useCallback(() => { if (opened) { setOpened(false) } }, [setOpened, opened])
 
-    useOutsideClickCheck(dropDownRef, closeDropdownIfOpened);
+    return <>
+        {opened && <ZIndexLayer onClick={closeDropdownIfOpened} />}
+        <DropDownHeaderElement ref={dropDownRef} onClick={toggleOpened}>
+            <DropDownHeaderContainerElement>
+                <IconContainerElement>
+                    {icon || null}
+                </IconContainerElement>
+                <DropDownHeaderTextElement>
+                    {headerText || ''}
+                </DropDownHeaderTextElement>
+            </DropDownHeaderContainerElement>
+            {opened &&
+                <DropDownMenuContainerElement>
+                    {children}
+                </DropDownMenuContainerElement>
 
-    return <DropDownHeaderElement ref={dropDownRef} onClick={toggleOpened}>
-        <DropDownHeaderContainerElement>
-            <IconContainerElement>
-                {icon || null}
-            </IconContainerElement>
-            <DropDownHeaderTextElement>
-                {headerText || ''}
-            </DropDownHeaderTextElement>
-        </DropDownHeaderContainerElement>
-        {opened && <DropDownMenuContainerElement>
-            {children}
-        </DropDownMenuContainerElement>}
-    </DropDownHeaderElement>
+            }
+        </DropDownHeaderElement>
+    </>
 }

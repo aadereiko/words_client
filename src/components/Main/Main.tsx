@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Redirect,
 } from "react-router-dom";
 import Header from '../Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUserAction, logoutUserAction } from '../../store/user/sagas';
+import { selectCurrentUserFullName, selectIsAuth } from '../../store/user/selectors';
+import { LoginPage } from '../LoginPage';
+import { appAuthRoutes, appNotAuthRoutes } from './routes-config';
+import HeaderContainer from '../Header';
+import Snackbar from '../Snackbar';
+import { loadAllUserSetsAction } from '../../store/wordsSet/sagas';
 
 const MainWrapper = styled.div`
     height: 100%;
@@ -15,18 +23,46 @@ const MainWrapper = styled.div`
 const MainContentElement = styled.div`
     width: 80%;
     margin-left: 10%;
-    height: calc(100% - 58px);
+    margin-top: 20px;
+    height: calc(100% - 81px);
+`
+
+const BacgrkoundLettersElement = styled.div`
+    position: fixed;
+    bottom: 5px;
+    right: 0px;
+    font-size: 400px;
+    line-height: 350px;
+    opacity: 0.40;
+    z-index: -1;
+    overflow: hidden;
+    max-width: 60%;
+
+    & > span {
+        color: #b5b5b5;
+    }
 `
 
 export const Main: React.FC<{}> = () => {
+    const dispatch = useDispatch();
+    const isAuth = useSelector(selectIsAuth);
+
+    useEffect(() => {
+        dispatch(loadUserAction());
+    }, [dispatch])
+
     return <Router>
-        <MainWrapper>
-            <Header></Header>
+        <Snackbar />
+        <BacgrkoundLettersElement><span>Aa</span></BacgrkoundLettersElement>
+        {isAuth !== null && <MainWrapper>
+            {isAuth && <HeaderContainer /> || null}
             <MainContentElement>
                 <Switch>
-
+                    {(isAuth ? appAuthRoutes : appNotAuthRoutes)
+                        .map(item => <Route exact component={item.component} path={item.path} key={item.id}></Route>)}
+                    <Redirect to={isAuth ? '/sets' : '/login'} />
                 </Switch>
             </MainContentElement>
-        </MainWrapper>
+        </MainWrapper>}
     </Router>
 }
