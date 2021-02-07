@@ -39,6 +39,7 @@ export const WordsContainerElement = styled.div`
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    padding-bottom: 30px;
 `;
 
 export const WordCardContainerElement = styled.div`
