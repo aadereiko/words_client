@@ -13,7 +13,7 @@ export const ModalContainerElement = styled.div`
     padding: 20px;
     border-radius: 20px;
     z-index: 30;
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);

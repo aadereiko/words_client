@@ -17,7 +17,7 @@ const snackBarAppearing = keyframes`
 `;
 
 export const SnackbarElement = styled.div`
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 50%;
     transform: translateX(50%);
