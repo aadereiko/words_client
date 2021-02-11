@@ -73,7 +73,7 @@ export const Header: React.FC<IHeaderProps> = ({ currentUserName, onLogout, onAd
                 <TextButton text="Sets" url="/sets" />
             </div>
             <RightContainerElement>
-                <DropDownMenu headerText="CREATE +">
+                <DropDownMenu headerText="CREATE">
                     <DropDownMenuItem onClick={toggleAddSetOpenedStatus}>
                         Set
                 </DropDownMenuItem>

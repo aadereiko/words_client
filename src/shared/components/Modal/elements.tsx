@@ -17,6 +17,8 @@ export const ModalContainerElement = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    max-height: 80vh;
+    overflow-y: auto;
 `;
 
 export const ModalTitleContainerElement = styled.div`

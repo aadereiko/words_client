@@ -23,7 +23,8 @@ export interface IWord {
     rus: string;
     eng: string;
     setId?: string;
-    setIds?: string;
+    setIds?: string[];
+    imgUrl?: string;
 }
 
 export interface IWordServer extends IWord {

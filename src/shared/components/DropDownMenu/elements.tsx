@@ -1,5 +1,6 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import generalStyles from "../../styles/general"
+import { appearingKeyframe } from "../../styles/keyframes";
 
 export const IconContainerElement = styled.div`
     display: flex;
@@ -30,16 +31,6 @@ export interface IDropDownMenuContainerElementProps {
     isOpened?: boolean;
 }
 
-const menuAppearing = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`
-
 export const DropDownMenuContainerElement = styled.div`
     position: absolute;
     width: 100%;
@@ -47,7 +38,7 @@ export const DropDownMenuContainerElement = styled.div`
     left: -1px; // border
     z-index: 10;
     background-color: white;
-    animation: ${menuAppearing} 0.5s;
+    animation: ${appearingKeyframe()} 0.5s;
     border-radius: 10px;
     padding: 5px 10px;
 `

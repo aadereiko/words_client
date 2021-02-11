@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import generalStyles from '../../styles/general';
 import { ReactComponent as DotIcon } from '../../assets/icons/dots.svg';
-import { ReactComponent as CopyIcon } from '../../assets/icons/copy.svg';
-import { ReactComponent as TransferIcon } from '../../assets/icons/transfer.svg';
 
 export const SceneElement = styled.div`
   position: relative;
@@ -75,12 +73,4 @@ export const DotIconElement = styled(DotIcon)`
   &:hover {
     opacity: 0.7;
   }
-`
-
-export const CopyIconElement = styled(CopyIcon)`
-  fill: ${generalStyles.primaryBlueColor};
-`
-
-export const TransferIconElement = styled(TransferIcon)`
-  fill: ${generalStyles.primaryBlueColor};
 `

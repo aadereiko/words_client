@@ -1,3 +1,4 @@
+import { ImageView } from './ImageView/ImageView';
 import { UnderMenu } from './UnderMenu/UnderMenu';
 import { UnderMenuItemTextElement, UnderMenuItemElement } from './UnderMenu/elements';
 export { default as TextButton } from './TextButton';
@@ -12,3 +13,5 @@ export { default as FlipCard } from './FlipCard';
 export { UnderMenuItemTextElement };
 export { UnderMenu };
 export { UnderMenuItemElement };
+
+export { ImageView };

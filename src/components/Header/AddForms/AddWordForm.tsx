@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Formik } from 'formik';
-import { Input, Modal, Select, TextButton } from '../../../shared';
+import { ImageView, Input, Modal, Select, TextButton } from '../../../shared';
 import { AddFormElement, AddFormConatinerElement, TranslationBlockElement } from './elements';
 import { addWordSchema, addWordValidate, IAddWordSchema } from './schemas';
 import { IWordsShortServerSet } from '../../../store/wordsSet/types';
@@ -68,6 +68,16 @@ const AddWordForm: React.FC<IAddWordFormProps> = ({ isOpened, toggleStatus, onSa
                                     <option key={wordsSet._id} value={wordsSet._id}>{wordsSet.name}</option>
                             )}
                         </Select>
+                        <Input
+                            label="Image URL"
+                            id="imgUrl"
+                            name="imgUrl"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.imgUrl}
+                            error={touched?.imgUrl && errors?.imgUrl || ''}
+                        />
+                        {values.imgUrl && !errors.imgUrl && <ImageView src={values.imgUrl} alt="Word image" openable={false} />}
                     </AddFormElement>
                 </AddFormConatinerElement>
             </Modal>}

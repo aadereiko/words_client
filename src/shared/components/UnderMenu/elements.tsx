@@ -1,15 +1,6 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import generalStyles from '../../styles/general';
-
-const menuAppearing = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`
+import { appearingKeyframe } from '../../styles/keyframes';
 
 export const UnderMenuContainerElement = styled.div`
   position: absolute;
@@ -20,7 +11,7 @@ export const UnderMenuContainerElement = styled.div`
   z-index: 20;
   top: 60px;
   padding: 10px 0px;
-  animation: ${menuAppearing} 0.3s;
+  animation: ${appearingKeyframe()} 0.3s;
 `;
 
 export const UnderMenuItemTextElement = styled.span`

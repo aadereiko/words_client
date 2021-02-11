@@ -1,9 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { FlipCard, Modal, UnderMenuItemElement, UnderMenuItemTextElement, ZIndexLayer } from '../../shared';
-import { CopyIconElement, TransferIconElement } from '../../shared/components/FlipCard/elements';
 import { IActionWordInSetProps, IWordServer, IWordsShortServerSet } from '../../store/wordsSet/types';
 import { CopyToSetForm } from './CopyToSetForm';
-import { LanguagesContainerElement, DescriptionBlockContainerElement, FieldFirstContainerElement, FirstInfoContainerElement, WordBlockHeaderContainerElement, WordCardContainerElement, WordsContainerElement, NoWordsElement } from './elements';
+import { CopyIconElement, TransferIconElement, WordsContainerElement, NoWordsElement, WordCardContainerElement, ImageIconElement, FullImageContainerElement, FullImageElement, FullImageAdditionalInfoElement } from './elements';
 import { ICopyToSetSchema } from './schemas';
 import { SetInfo } from './SetInfo';
 import { WordsBlockHeader } from './WordsBlockHeader';
@@ -30,6 +29,17 @@ interface IOpenedMenu {
     id: string;
 }
 
+interface IOpenedImage {
+    url: string;
+    eng: string;
+    rus: string;
+}
+
+const initOpenedImage: IOpenedImage = {
+    rus: '',
+    eng: '',
+    url: '',
+}
 
 export const SetPage: React.FC<ISetPageProps> = ({
     createdAt,
@@ -48,6 +58,7 @@ export const SetPage: React.FC<ISetPageProps> = ({
         id: '',
     });
     const [isModalOpened, setIsModalOpened] = useState(false);
+    const [shownImageUrl, setShownImageUrl] = useState<IOpenedImage>(initOpenedImage);
 
     const [language, setLanguage] = useState<tLangauge>(RUS);
     const changeLanguage = useCallback((lang: tLangauge) => {
@@ -84,7 +95,7 @@ export const SetPage: React.FC<ISetPageProps> = ({
     const closeModal = useCallback(() => {
         setIsModalOpened(false);
     }, [setIsModalOpened])
-    
+
     // menu of set card
     const onClickSaveToCopy = useCallback((values: ICopyToSetSchema) => {
         if (copyToSet && openedMenuStatus.id) {
@@ -106,6 +117,15 @@ export const SetPage: React.FC<ISetPageProps> = ({
             closeMenu();
         }
     }, [currentSetId, openedMenuStatus, closeMenu]);
+
+    const onShowImageClick = useCallback((imgInfo: IOpenedImage) => () => {
+        setShownImageUrl(imgInfo);
+        closeMenu();
+    }, [setShownImageUrl, closeMenu]);
+
+    const closeImageView = useCallback(() => {
+        setShownImageUrl(initOpenedImage);
+    }, [setShownImageUrl]);
 
     return <div>
         <CopyToSetForm
@@ -135,18 +155,36 @@ export const SetPage: React.FC<ISetPageProps> = ({
                             <UnderMenuItemTextElement>Copy to</UnderMenuItemTextElement>
                             <CopyIconElement width="18px" />
                         </UnderMenuItemElement>
-                        <UnderMenuItemElement>
-                            <UnderMenuItemTextElement
-                                onClick={onClickRemoveFromSet}>
+                        <UnderMenuItemElement onClick={onClickRemoveFromSet}>
+                            <UnderMenuItemTextElement>
                                 Remove from set
                                 </UnderMenuItemTextElement>
                             <TransferIconElement width="18px" />
                         </UnderMenuItemElement>
+                        {word?.imgUrl && <UnderMenuItemElement onClick={onShowImageClick({
+                            eng: word.eng,
+                            rus: word.rus,
+                            url: word.imgUrl
+                        })}>
+                            <UnderMenuItemTextElement>
+                                Show image
+                                </UnderMenuItemTextElement>
+                            <ImageIconElement width="18px" />
+                        </UnderMenuItemElement>}
                     </>}
                         isMenuOpened={openedMenuStatus?.opened && openedMenuStatus?.id === word._id}
                         handleIconClick={onIconClick(word._id)} />
                 </WordCardContainerElement>
             ) || <NoWordsElement>No words yet :(</NoWordsElement>}
+            {shownImageUrl.url && <>
+                <ZIndexLayer onClick={closeImageView} />
+                <FullImageContainerElement>
+                    <FullImageElement src={shownImageUrl.url} alt="Word picture" />
+                    <FullImageAdditionalInfoElement>
+                        {shownImageUrl.eng} | {shownImageUrl.rus}
+                    </FullImageAdditionalInfoElement>
+                </FullImageContainerElement>
+            </>}
         </WordsContainerElement>
     </div >
 };

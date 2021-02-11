@@ -1,20 +1,10 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import generalStyles from '../../shared/styles/general';
+import { appearingKeyframe } from '../../shared/styles/keyframes';
 
 interface ISnackbarProps {
     isSuccess: boolean;
 }
-
-const snackBarAppearing = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 0.95;
-
-  }
-`;
 
 export const SnackbarElement = styled.div`
     position: fixed;
@@ -30,7 +20,7 @@ export const SnackbarElement = styled.div`
     align-items: center;
     z-index: 5;
     border-radius: 10px;
-    animation: ${snackBarAppearing} 0.8s;
+    animation: ${appearingKeyframe(0.95)} 0.8s;
     cursor: pointer;
 
     background-color: ${generalStyles.lighterBlueBackgroundColor};

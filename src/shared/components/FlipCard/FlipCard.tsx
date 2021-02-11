@@ -4,8 +4,6 @@ import ZIndexLayer from '../ZIndexLayer';
 import {
     SceneElement, CardElement, CardFaceFrontElement,
     CardFaceBackElement, IconContainerElement, DotIconElement,
-    CopyIconElement,
-    TransferIconElement,
 } from './elements';
 
 
