@@ -1,3 +1,4 @@
+import { FullImageView } from './FullImageView/FullImageView';
 import { ImageView } from './ImageView/ImageView';
 import { UnderMenu } from './UnderMenu/UnderMenu';
 import { UnderMenuItemTextElement, UnderMenuItemElement } from './UnderMenu/elements';
@@ -15,3 +16,4 @@ export { UnderMenu };
 export { UnderMenuItemElement };
 
 export { ImageView };
+export { FullImageView };

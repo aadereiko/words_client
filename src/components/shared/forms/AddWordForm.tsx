@@ -1,22 +1,24 @@
 import React, { useCallback } from 'react';
 import { Formik } from 'formik';
 import { ImageView, Input, Modal, Select, TextButton } from '../../../shared';
-import { AddFormElement, AddFormConatinerElement, TranslationBlockElement } from './elements';
-import { addWordSchema, addWordValidate, IAddWordSchema } from './schemas';
+import { AddFormElement, AddFormConatinerElement, TranslationBlockElement } from '../../Header/AddForms/elements';
 import { IWordsShortServerSet } from '../../../store/wordsSet/types';
+import { addWordSchema, addWordValidate, IAddWordSchema } from './schemas';
 
 export interface IAddWordFormProps {
     isOpened: boolean;
-    setsList: IWordsShortServerSet[];
+    setsList?: IWordsShortServerSet[];
     toggleStatus: () => void;
     onSave: (values: IAddWordSchema) => void;
     onEsc: () => void;
+    initValues: IAddWordSchema;
+    withSet?: boolean;
 }
 
-const AddWordForm: React.FC<IAddWordFormProps> = ({ isOpened, toggleStatus, onSave, setsList, onEsc }) => {
+const AddWordForm: React.FC<IAddWordFormProps> = ({ isOpened, toggleStatus, onSave, setsList, onEsc, initValues, withSet = false }) => {
     const handleSave = useCallback((values) => () => onSave(values), [onSave])
 
-    return isOpened && <Formik initialValues={addWordSchema} onSubmit={onSave} validate={addWordValidate}>
+    return isOpened && <Formik initialValues={initValues} onSubmit={onSave} validate={addWordValidate}>
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) =>
             <Modal
                 onEsc={onEsc}
@@ -52,7 +54,7 @@ const AddWordForm: React.FC<IAddWordFormProps> = ({ isOpened, toggleStatus, onSa
                                 text="Translate with CR"
                             />
                         </TranslationBlockElement>
-                        <Select
+                       {withSet && <Select
                             label="Set *"
                             id="setId"
                             name="setId"
@@ -67,7 +69,7 @@ const AddWordForm: React.FC<IAddWordFormProps> = ({ isOpened, toggleStatus, onSa
                                 (wordsSet) =>
                                     <option key={wordsSet._id} value={wordsSet._id}>{wordsSet.name}</option>
                             )}
-                        </Select>
+                        </Select>}
                         <Input
                             label="Image URL"
                             id="imgUrl"

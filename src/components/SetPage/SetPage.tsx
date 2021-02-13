@@ -1,8 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { FlipCard, Modal, UnderMenuItemElement, UnderMenuItemTextElement, ZIndexLayer } from '../../shared';
-import { IActionWordInSetProps, IWordServer, IWordsShortServerSet } from '../../store/wordsSet/types';
+import { FlipCard, FullImageView, Modal, UnderMenuItemElement, UnderMenuItemTextElement, ZIndexLayer } from '../../shared';
+import { IActionWordInSetProps, IWordServer, IWordsShortServerSet, IWordWithId } from '../../store/wordsSet/types';
+import { IAddSetSchema } from '../Header/AddForms/schemas';
+import { addWordSchema, IAddWordSchema } from '../shared';
+import AddWordForm from '../shared/forms/AddWordForm';
 import { CopyToSetForm } from './CopyToSetForm';
-import { CopyIconElement, TransferIconElement, WordsContainerElement, NoWordsElement, WordCardContainerElement, ImageIconElement, FullImageContainerElement, FullImageElement, FullImageAdditionalInfoElement } from './elements';
+import { CopyIconElement, TransferIconElement, WordsContainerElement, NoWordsElement, WordCardContainerElement, ImageIconElement, EditIconElement } from './elements';
 import { ICopyToSetSchema } from './schemas';
 import { SetInfo } from './SetInfo';
 import { WordsBlockHeader } from './WordsBlockHeader';
@@ -18,6 +21,7 @@ interface ISetPageProps {
     setsList: IWordsShortServerSet[];
     copyToSet: (values: IActionWordInSetProps) => void;
     removeFromSet: (values: IActionWordInSetProps) => void;
+    updateWord: (values: IWordWithId) => void;
 }
 
 type tLangauge = 'eng' | 'rus';
@@ -51,7 +55,8 @@ export const SetPage: React.FC<ISetPageProps> = ({
     setsList,
     copyToSet,
     removeFromSet,
-    currentSetId
+    currentSetId,
+    updateWord
 }) => {
     const [openedMenuStatus, setOpenedMenuStatus] = useState<IOpenedMenu>({
         opened: false,
@@ -59,6 +64,11 @@ export const SetPage: React.FC<ISetPageProps> = ({
     });
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [shownImageUrl, setShownImageUrl] = useState<IOpenedImage>(initOpenedImage);
+    const [wordToEdit, setWordToEdit] = useState<IWordWithId>({
+        ...addWordSchema,
+        wordId: '',
+    });
+    const [isEditing, setIsEditing] = useState(false);
 
     const [language, setLanguage] = useState<tLangauge>(RUS);
     const changeLanguage = useCallback((lang: tLangauge) => {
@@ -127,6 +137,28 @@ export const SetPage: React.FC<ISetPageProps> = ({
         setShownImageUrl(initOpenedImage);
     }, [setShownImageUrl]);
 
+    const toggleEditWordOpenedStatus = useCallback(() => {
+        setIsEditing(status => !status);
+    }, [setIsEditing]);
+
+    const handleSaveWord = useCallback((values: IAddWordSchema) => {
+        toggleEditWordOpenedStatus();
+        updateWord({
+            ...values,
+            wordId: wordToEdit.wordId,
+        });
+    }, [toggleEditWordOpenedStatus, updateWord, wordToEdit.wordId]);
+
+    const closeEditWordModal = useCallback(() => {
+        setIsEditing(false);
+    }, [setIsEditing]);
+
+    const onEditClick = useCallback((word: IWordWithId) => () => {
+        setIsEditing(true);
+        setWordToEdit(word);
+        closeMenu();
+    }, [setWordToEdit, setIsEditing, closeMenu]);
+
     return <div>
         <CopyToSetForm
             isOpened={isModalOpened}
@@ -165,12 +197,25 @@ export const SetPage: React.FC<ISetPageProps> = ({
                             eng: word.eng,
                             rus: word.rus,
                             url: word.imgUrl
-                        })}>
+                        })}
+                        >
                             <UnderMenuItemTextElement>
                                 Show image
                                 </UnderMenuItemTextElement>
                             <ImageIconElement width="18px" />
-                        </UnderMenuItemElement>}
+                        </UnderMenuItemElement>
+                        }
+                        <UnderMenuItemElement onClick={onEditClick({
+                            eng: word.eng,
+                            rus: word.rus,
+                            imgUrl: word.imgUrl,
+                            wordId: word._id,
+                        })}>
+                            <UnderMenuItemTextElement>
+                                Edit
+                                </UnderMenuItemTextElement>
+                            <EditIconElement width="18px" />
+                        </UnderMenuItemElement>
                     </>}
                         isMenuOpened={openedMenuStatus?.opened && openedMenuStatus?.id === word._id}
                         handleIconClick={onIconClick(word._id)} />
@@ -178,13 +223,9 @@ export const SetPage: React.FC<ISetPageProps> = ({
             ) || <NoWordsElement>No words yet :(</NoWordsElement>}
             {shownImageUrl.url && <>
                 <ZIndexLayer onClick={closeImageView} />
-                <FullImageContainerElement>
-                    <FullImageElement src={shownImageUrl.url} alt="Word picture" />
-                    <FullImageAdditionalInfoElement>
-                        {shownImageUrl.eng} | {shownImageUrl.rus}
-                    </FullImageAdditionalInfoElement>
-                </FullImageContainerElement>
+                <FullImageView url={shownImageUrl.url} alt="A word image" additionalText={`${shownImageUrl.eng} | ${shownImageUrl.rus}`} />
             </>}
+            <AddWordForm isOpened={isEditing} initValues={wordToEdit} toggleStatus={toggleEditWordOpenedStatus} onSave={handleSaveWord} onEsc={closeEditWordModal} />
         </WordsContainerElement>
     </div >
 };

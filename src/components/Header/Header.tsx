@@ -3,10 +3,12 @@ import { TextButton, DropDownMenu, Modal } from '../../shared';
 import { AddInCircleElement, HeaderElement, RightContainerElement } from './elements';
 import { ReactComponent as UserIcon } from '../../shared/assets/icons/user.svg';
 import { DropDownMenuItem } from '../../shared/components/DropDownMenu/DropDownMenuItem';
-import { AddSetForm, AddWordForm } from './AddForms';
-import { IAddSetSchema, IAddWordSchema } from './AddForms/schemas';
+import { AddSetForm } from './AddForms';
+import { IAddSetSchema } from './AddForms/schemas';
 import { IWordsShortServerSet } from '../../store/wordsSet/types';
 import { useKeyboardEvent } from '../../shared/hooks/keyHandler';
+import { addWordSchema, IAddWordSchema } from '../shared';
+import AddWordForm from '../shared/forms/AddWordForm';
 export interface IHeaderProps {
     currentUserName: string;
     setsList: IWordsShortServerSet[];
@@ -90,7 +92,7 @@ export const Header: React.FC<IHeaderProps> = ({ currentUserName, onLogout, onAd
 
         </HeaderElement>
         <AddSetForm isOpened={isAddSetOpened} toggleStatus={toggleAddSetOpenedStatus} onSave={handleSaveSet} onEsc={closeAddSetModal} />
-        <AddWordForm isOpened={isAddWordOpened} toggleStatus={toggleAddWordOpenedStatus} onSave={handleSaveWord} setsList={setsList} onEsc={closeAddWordModal} />
+        <AddWordForm withSet initValues={addWordSchema} isOpened={isAddWordOpened} toggleStatus={toggleAddWordOpenedStatus} onSave={handleSaveWord} setsList={setsList} onEsc={closeAddWordModal} />
     </>
 }
 

@@ -3,7 +3,7 @@ import generalStyles from "../../shared/styles/general";
 import { ReactComponent as ImageIcon } from '../../shared/assets/icons/image.svg';
 import { ReactComponent as CopyIcon } from '../../shared/assets/icons/copy.svg';
 import { ReactComponent as TransferIcon } from '../../shared/assets/icons/transfer.svg'
-import { appearingKeyframe } from "../../shared/styles/keyframes";
+import { ReactComponent as EditIcon } from '../../shared/assets/icons/edit.svg'
 
 export const FirstInfoContainerElement = styled.div`
     font-size: 14px;
@@ -105,22 +105,6 @@ export const ImageIconElement = styled(ImageIcon)`
   fill: ${generalStyles.primaryBlueColor};
 `
 
-export const FullImageContainerElement = styled.div`
-    z-index: 20;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-height: 80vw;
-    animation: ${appearingKeyframe()} 0.5s;
-`;
-
-export const FullImageElement = styled.img`
-    border-radius: 10px;
-
-`;
-
-export const FullImageAdditionalInfoElement = styled.div`
-    text-align: center;
-    color: white;
-`;
+export const EditIconElement = styled(EditIcon)`
+  fill: ${generalStyles.primaryBlueColor};
+`

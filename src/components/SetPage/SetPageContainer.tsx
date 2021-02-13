@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { copyToSetAction, loadSelectedSetAction, removeFromSetAction } from '../../store/wordsSet/sagas';
+import { copyToSetAction, loadSelectedSetAction, removeFromSetAction, updateWordAction } from '../../store/wordsSet/sagas';
 import { selectCurrentUserSetShortList, selectSelectedWordsSetCreatedAt, selectSelectedWordsSetDescription, selectSelectedWordsSetName, selectSelectedWordsSetUpdatedAt, selectSelectedWordsSetWordList } from '../../store/wordsSet/selectors';
-import { IActionWordInSetProps } from '../../store/wordsSet/types';
+import { IActionWordInSetProps, IWordWithId } from '../../store/wordsSet/types';
+import { IAddWordSchema } from '../shared';
 import { SetPage } from './SetPage';
 
 interface ISetPageContainerParams {
@@ -29,11 +30,15 @@ export const SetPageContainer: React.FC<void> = () => {
 
     const copyToSet = useCallback((values: IActionWordInSetProps) => {
         dispatch(copyToSetAction(values))
-    }, [dispatch]); 
+    }, [dispatch]);
 
     const removeFromSet = useCallback((values: IActionWordInSetProps) => {
         dispatch(removeFromSetAction(values))
-    }, [dispatch]); 
+    }, [dispatch]);
+
+    const updateWord = useCallback((values: IWordWithId) => {
+        dispatch(updateWordAction(values));
+    }, [dispatch])
 
     return <SetPage
         currentSetId={id}
@@ -46,6 +51,7 @@ export const SetPageContainer: React.FC<void> = () => {
         setsList={setsList}
         copyToSet={copyToSet}
         removeFromSet={removeFromSet}
+        updateWord={updateWord}
     />
 };
 

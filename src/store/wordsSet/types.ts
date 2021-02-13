@@ -27,6 +27,10 @@ export interface IWord {
     imgUrl?: string;
 }
 
+export interface IWordWithId extends IWord {
+    wordId: string;
+}
+
 export interface IWordServer extends IWord {
     _id: string;
     createdAt: Date | string;
