@@ -6,9 +6,8 @@ import AddWordForm from '../shared/forms/AddWordForm';
 import { CopyToSetForm } from './CopyToSetForm';
 import { CopyIconElement, EditIconElement, ImageIconElement, NoItemsElement, TransferIconElement, WordCardContainerElement, WordsContainerElement } from './elements';
 import { ICopyToSetSchema } from './schemas';
+import { ENG } from './general';
 
-const ENG = 'eng';
-const RUS = 'rus';
 
 interface IOpenedMenu {
     opened: boolean;

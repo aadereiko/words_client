@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { copyToSetAction, loadSelectedSetAction, removeFromSetAction, updateWordAction } from '../../store/wordsSet/sagas';
 import { selectCurrentUserSetShortList, selectSelectedWordsSetCreatedAt, selectSelectedWordsSetDescription, selectSelectedWordsSetName, selectSelectedWordsSetUpdatedAt, selectSelectedWordsSetWordList } from '../../store/wordsSet/selectors';
 import { IActionWordInSetProps, IWordWithId } from '../../store/wordsSet/types';
-import { IAddWordSchema } from '../shared';
 import { SetPage } from './SetPage';
 
 interface ISetPageContainerParams {

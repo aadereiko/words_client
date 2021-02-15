@@ -1,10 +1,7 @@
 import React, { useCallback } from 'react';
 import { LanguagesContainerElement, WordBlockHeaderContainerElement } from './elements';
+import { iCardsMode, PHOTO, RUS, ENG } from './general';
 
-export type iCardsMode = 'eng' | 'rus' | 'photo';
-const ENG = 'eng';
-const RUS = 'rus';
-const PHOTO = 'photo';
 
 export interface IWordsBlockHeaderProps {
     mode: iCardsMode;

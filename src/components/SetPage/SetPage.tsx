@@ -1,16 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { FlipCard, FullImageView, ImageView, Modal, UnderMenuItemElement, UnderMenuItemTextElement, ZIndexLayer } from '../../shared';
 import { IActionWordInSetProps, IWordServer, IWordsShortServerSet, IWordWithId } from '../../store/wordsSet/types';
-import { IAddSetSchema } from '../Header/AddForms/schemas';
-import { addWordSchema, IAddWordSchema } from '../shared';
-import AddWordForm from '../shared/forms/AddWordForm';
-import { CopyToSetForm } from './CopyToSetForm';
-import { CopyIconElement, TransferIconElement, WordsContainerElement, NoItemsElement, WordCardContainerElement, ImageIconElement, EditIconElement, WordPhotoContainerElement } from './elements';
 import { PhotosContainer } from './PhotosContainer';
-import { ICopyToSetSchema } from './schemas';
 import { SetInfo } from './SetInfo';
 import { WordsBlockHeader } from './WordsBlockHeader';
 import { WordsContainer } from './WordsContainer';
+import { iCardsMode, PHOTO, RUS } from './general';
 
 interface ISetPageProps {
     currentSetId: string;
@@ -25,11 +19,6 @@ interface ISetPageProps {
     removeFromSet: (values: IActionWordInSetProps) => void;
     updateWord: (values: IWordWithId) => void;
 }
-
-type iCardsMode = 'eng' | 'rus' | 'photo';
-const ENG = 'eng';
-const RUS = 'rus';
-const PHOTO = 'photo';
 
 export const SetPage: React.FC<ISetPageProps> = ({
     createdAt,
