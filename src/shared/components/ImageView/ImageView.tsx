@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { FullImageView } from '../FullImageView';
 import ZIndexLayer from '../ZIndexLayer';
 import { ImageContainerElement, LayerElement, PreviewImageElement, LayerTextElement, ImageSlideContainerElement, ImageElement } from './elements';
 
@@ -6,9 +7,10 @@ interface IImageViewProps {
     src: string;
     alt: string;
     openable?: boolean;
+    additionalText?: string;
 }
 
-export const ImageView: React.FC<IImageViewProps> = ({ src, alt, openable = true }) => {
+export const ImageView: React.FC<IImageViewProps> = ({ src, alt, openable = true, additionalText }) => {
     const [isLayerShown, setIsLayerShown] = useState(false);
     const [isOpened, setIsOpened] = useState(false);
 
@@ -41,10 +43,8 @@ export const ImageView: React.FC<IImageViewProps> = ({ src, alt, openable = true
             <PreviewImageElement onMouseOver={onPreviewHover} src={src} alt={alt} />
         </ImageContainerElement>
         {isOpened && <>
-            <ZIndexLayer zIndex={50} onClick={onGlobalIndexLayerClick} />
-            <ImageSlideContainerElement onClick={onGlobalIndexLayerClick}>
-                <ImageElement src={src} alt={alt} />
-            </ImageSlideContainerElement>
+            <ZIndexLayer onClick={onGlobalIndexLayerClick} />
+            <FullImageView url={src} alt={alt} additionalText={additionalText} />
         </>}
     </>
 }

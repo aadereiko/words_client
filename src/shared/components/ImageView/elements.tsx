@@ -20,7 +20,7 @@ export const LayerElement = styled.div`
     background: black;
     opacity: 0.5;
     top: 0;
-    bottom: 5px;
+    bottom: 0px;
     left: 0;
     right: 0;
     cursor: pointer;
@@ -45,9 +45,10 @@ export const ImageSlideContainerElement = styled.div`
 `
 export const ImageElement = styled.img`
     position: absolute;
-    width: 100%;
+    max-width: 80%;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
     animation: ${appearingKeyframe()} 0.8s;
 `
 

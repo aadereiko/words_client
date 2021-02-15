@@ -1,14 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { FlipCard, FullImageView, Modal, UnderMenuItemElement, UnderMenuItemTextElement, ZIndexLayer } from '../../shared';
+import { FlipCard, FullImageView, ImageView, Modal, UnderMenuItemElement, UnderMenuItemTextElement, ZIndexLayer } from '../../shared';
 import { IActionWordInSetProps, IWordServer, IWordsShortServerSet, IWordWithId } from '../../store/wordsSet/types';
 import { IAddSetSchema } from '../Header/AddForms/schemas';
 import { addWordSchema, IAddWordSchema } from '../shared';
 import AddWordForm from '../shared/forms/AddWordForm';
 import { CopyToSetForm } from './CopyToSetForm';
-import { CopyIconElement, TransferIconElement, WordsContainerElement, NoWordsElement, WordCardContainerElement, ImageIconElement, EditIconElement } from './elements';
+import { CopyIconElement, TransferIconElement, WordsContainerElement, NoItemsElement, WordCardContainerElement, ImageIconElement, EditIconElement, WordPhotoContainerElement } from './elements';
+import { PhotosContainer } from './PhotosContainer';
 import { ICopyToSetSchema } from './schemas';
 import { SetInfo } from './SetInfo';
 import { WordsBlockHeader } from './WordsBlockHeader';
+import { WordsContainer } from './WordsContainer';
 
 interface ISetPageProps {
     currentSetId: string;
@@ -24,26 +26,10 @@ interface ISetPageProps {
     updateWord: (values: IWordWithId) => void;
 }
 
-type tLangauge = 'eng' | 'rus';
+type iCardsMode = 'eng' | 'rus' | 'photo';
 const ENG = 'eng';
 const RUS = 'rus';
-
-interface IOpenedMenu {
-    opened: boolean;
-    id: string;
-}
-
-interface IOpenedImage {
-    url: string;
-    eng: string;
-    rus: string;
-}
-
-const initOpenedImage: IOpenedImage = {
-    rus: '',
-    eng: '',
-    url: '',
-}
+const PHOTO = 'photo';
 
 export const SetPage: React.FC<ISetPageProps> = ({
     createdAt,
@@ -58,116 +44,13 @@ export const SetPage: React.FC<ISetPageProps> = ({
     currentSetId,
     updateWord
 }) => {
-    const [openedMenuStatus, setOpenedMenuStatus] = useState<IOpenedMenu>({
-        opened: false,
-        id: '',
-    });
-    const [isModalOpened, setIsModalOpened] = useState(false);
-    const [shownImageUrl, setShownImageUrl] = useState<IOpenedImage>(initOpenedImage);
-    const [wordToEdit, setWordToEdit] = useState<IWordWithId>({
-        ...addWordSchema,
-        wordId: '',
-    });
-    const [isEditing, setIsEditing] = useState(false);
-
-    const [language, setLanguage] = useState<tLangauge>(RUS);
-    const changeLanguage = useCallback((lang: tLangauge) => {
-        setLanguage(lang);
-    }, [setLanguage]);
-
-    const frontKey = useMemo(() => language === ENG ? 'eng' : 'rus', [language]);
-    const backKey = useMemo(() => language === ENG ? 'rus' : 'eng', [language]);
-
-    const onIconClick = useCallback((id) => () => {
-        setOpenedMenuStatus(status => ({
-            opened: !status.opened,
-            id,
-        }));
-    }, [setOpenedMenuStatus]);
-
-    const closeMenu = useCallback(() => {
-        setOpenedMenuStatus(status => ({
-            ...status,
-            opened: false,
-        }));
-    }, [setOpenedMenuStatus])
-
-    const onClickCopyTo = useCallback(() => {
-        closeMenu();
-        setIsModalOpened(true);
-    }, [setIsModalOpened]);
-
-    const toggleModalStatus = useCallback(() => {
-        setIsModalOpened(status => !status);
-    }, [setIsModalOpened])
-
-
-    const closeModal = useCallback(() => {
-        setIsModalOpened(false);
-    }, [setIsModalOpened])
-
-    // menu of set card
-    const onClickSaveToCopy = useCallback((values: ICopyToSetSchema) => {
-        if (copyToSet && openedMenuStatus.id) {
-            copyToSet({
-                setId: values.setId,
-                wordId: openedMenuStatus.id
-            });
-            closeModal();
-        }
-    }, [copyToSet, openedMenuStatus, closeModal]);
-
-
-    const onClickRemoveFromSet = useCallback(() => {
-        if (openedMenuStatus.opened && openedMenuStatus.id) {
-            removeFromSet({
-                setId: currentSetId,
-                wordId: openedMenuStatus.id
-            });
-            closeMenu();
-        }
-    }, [currentSetId, openedMenuStatus, closeMenu]);
-
-    const onShowImageClick = useCallback((imgInfo: IOpenedImage) => () => {
-        setShownImageUrl(imgInfo);
-        closeMenu();
-    }, [setShownImageUrl, closeMenu]);
-
-    const closeImageView = useCallback(() => {
-        setShownImageUrl(initOpenedImage);
-    }, [setShownImageUrl]);
-
-    const toggleEditWordOpenedStatus = useCallback(() => {
-        setIsEditing(status => !status);
-    }, [setIsEditing]);
-
-    const handleSaveWord = useCallback((values: IAddWordSchema) => {
-        toggleEditWordOpenedStatus();
-        updateWord({
-            ...values,
-            wordId: wordToEdit.wordId,
-        });
-    }, [toggleEditWordOpenedStatus, updateWord, wordToEdit.wordId]);
-
-    const closeEditWordModal = useCallback(() => {
-        setIsEditing(false);
-    }, [setIsEditing]);
-
-    const onEditClick = useCallback((word: IWordWithId) => () => {
-        setIsEditing(true);
-        setWordToEdit(word);
-        closeMenu();
-    }, [setWordToEdit, setIsEditing, closeMenu]);
+    const [mode, setMode] = useState<iCardsMode>(RUS);
+    const changeMode = useCallback((mode: iCardsMode) => {
+        setMode(mode);
+    }, [setMode]);
+    const wordsWithPhotos = useMemo(() => words.filter(word => !!word?.imgUrl), [words])
 
     return <div>
-        <CopyToSetForm
-            isOpened={isModalOpened}
-            toggleStatus={toggleModalStatus}
-            onSave={onClickSaveToCopy}
-            setsList={setsList}
-            onEsc={closeModal}
-        />
-        {openedMenuStatus?.opened && <ZIndexLayer onClick={closeMenu} />}
         <SetInfo
             description={description}
             name={name}
@@ -175,58 +58,23 @@ export const SetPage: React.FC<ISetPageProps> = ({
             updatedAt={updatedAt}
             lastRepetition={lastRepetition} />
         <WordsBlockHeader
-            handleChangeLanguage={changeLanguage}
-            language={language}
+            handleChangeMode={changeMode}
+            mode={mode}
             wordsLength={words?.length || 0}
+            wordsWithPhotoLength={wordsWithPhotos?.length || 0}
         />
-        <WordsContainerElement>
-            {words?.length && words?.map(word =>
-                <WordCardContainerElement key={word._id}>
-                    <FlipCard frontText={word[frontKey]} backText={word[backKey]} innerMenu={<>
-                        <UnderMenuItemElement onClick={onClickCopyTo}>
-                            <UnderMenuItemTextElement>Copy to</UnderMenuItemTextElement>
-                            <CopyIconElement width="18px" />
-                        </UnderMenuItemElement>
-                        <UnderMenuItemElement onClick={onClickRemoveFromSet}>
-                            <UnderMenuItemTextElement>
-                                Remove from set
-                                </UnderMenuItemTextElement>
-                            <TransferIconElement width="18px" />
-                        </UnderMenuItemElement>
-                        {word?.imgUrl && <UnderMenuItemElement onClick={onShowImageClick({
-                            eng: word.eng,
-                            rus: word.rus,
-                            url: word.imgUrl
-                        })}
-                        >
-                            <UnderMenuItemTextElement>
-                                Show image
-                                </UnderMenuItemTextElement>
-                            <ImageIconElement width="18px" />
-                        </UnderMenuItemElement>
-                        }
-                        <UnderMenuItemElement onClick={onEditClick({
-                            eng: word.eng,
-                            rus: word.rus,
-                            imgUrl: word.imgUrl,
-                            wordId: word._id,
-                        })}>
-                            <UnderMenuItemTextElement>
-                                Edit
-                                </UnderMenuItemTextElement>
-                            <EditIconElement width="18px" />
-                        </UnderMenuItemElement>
-                    </>}
-                        isMenuOpened={openedMenuStatus?.opened && openedMenuStatus?.id === word._id}
-                        handleIconClick={onIconClick(word._id)} />
-                </WordCardContainerElement>
-            ) || <NoWordsElement>No words yet :(</NoWordsElement>}
-            {shownImageUrl.url && <>
-                <ZIndexLayer onClick={closeImageView} />
-                <FullImageView url={shownImageUrl.url} alt="A word image" additionalText={`${shownImageUrl.eng} | ${shownImageUrl.rus}`} />
-            </>}
-            <AddWordForm isOpened={isEditing} initValues={wordToEdit} toggleStatus={toggleEditWordOpenedStatus} onSave={handleSaveWord} onEsc={closeEditWordModal} />
-        </WordsContainerElement>
-    </div >
+        {mode === PHOTO ?
+            <PhotosContainer words={wordsWithPhotos} />
+            :
+            <WordsContainer
+                words={words}
+                mode={mode}
+                copyToSet={copyToSet}
+                removeFromSet={removeFromSet}
+                currentSetId={currentSetId}
+                updateWord={updateWord}
+                setsList={setsList}
+            />}
+    </div>
 };
 

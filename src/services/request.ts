@@ -18,8 +18,8 @@ export interface IResponse<T> {
 
 // add T to here
 export const requestAPI = (url: string, { body, ...options }: IRequestParams = {}) => {
-    // const host = 'http://localhost:8000';
-    const host = process.env.REACT_APP_API || 'http://192.168.100.6:8000';
+    const host = 'http://localhost:8000';
+    // const host = process.env.REACT_APP_API || 'http://192.168.100.6:8000';
     // const host = 'http://localhost:8000';
     const headers = new Headers(options.headers);
     headers.append('Content-Type', 'application/json');

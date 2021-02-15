@@ -87,7 +87,7 @@ export const CopyToSetFormElement = styled.form`
     margin-bottom: 10px;
 `;
 
-export const NoWordsElement = styled.span`
+export const NoItemsElement = styled.span`
     color: ${generalStyles.grayPrimaryColor};
     font-weight: 500;
 `
@@ -108,3 +108,17 @@ export const ImageIconElement = styled(ImageIcon)`
 export const EditIconElement = styled(EditIcon)`
   fill: ${generalStyles.primaryBlueColor};
 `
+
+export const WordPhotoContainerElement = styled.div`
+    max-width: 300px;
+    margin: 5px;
+
+
+`
+
+export const PhotosContainerElement = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-bottom: 30px;
+`;

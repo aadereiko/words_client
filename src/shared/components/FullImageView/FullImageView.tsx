@@ -4,14 +4,14 @@ import { FullImageAdditionalInfoElement, FullImageContainerElement, FullImageEle
 interface IFullImageViewProps {
     url: string;
     alt: string;
-    additionalText: string;
+    additionalText?: string;
 }
 
 export const FullImageView: React.FC<IFullImageViewProps> = ({ url, alt, additionalText }) => {
     return <FullImageContainerElement>
         <FullImageElement src={url} alt={alt} />
-        <FullImageAdditionalInfoElement>
+        {additionalText && <FullImageAdditionalInfoElement>
             {additionalText}
-        </FullImageAdditionalInfoElement>
+        </FullImageAdditionalInfoElement>}
     </FullImageContainerElement>
 }

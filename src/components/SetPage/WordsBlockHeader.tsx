@@ -1,30 +1,34 @@
 import React, { useCallback } from 'react';
 import { LanguagesContainerElement, WordBlockHeaderContainerElement } from './elements';
 
-export type tLangauge = 'eng' | 'rus';
+export type iCardsMode = 'eng' | 'rus' | 'photo';
 const ENG = 'eng';
 const RUS = 'rus';
+const PHOTO = 'photo';
 
 export interface IWordsBlockHeaderProps {
-    language: tLangauge;
-    handleChangeLanguage: (lang: tLangauge) => void;
+    mode: iCardsMode;
+    handleChangeMode: (mode: iCardsMode) => void;
     wordsLength: number;
+    wordsWithPhotoLength: number;
 }
 
-export const WordsBlockHeader: React.FC<IWordsBlockHeaderProps> = ({ language, handleChangeLanguage, wordsLength }) => {
-    const onChangeLanguage = useCallback((lang: tLangauge) => () => {
-        if (handleChangeLanguage) {
-            handleChangeLanguage(lang);
+export const WordsBlockHeader: React.FC<IWordsBlockHeaderProps> = ({ mode, handleChangeMode, wordsLength, wordsWithPhotoLength }) => {
+    const onChangeLanguage = useCallback((mode: iCardsMode) => () => {
+        if (handleChangeMode) {
+            handleChangeMode(mode);
         }
-    }, [handleChangeLanguage]);
+    }, [handleChangeMode]);
 
     return <WordBlockHeaderContainerElement>
         <h3>Words: </h3>
         <LanguagesContainerElement>
-            <span className={language === ENG ? 'active' : ''} onClick={onChangeLanguage(ENG)}>ENG </span>
+            <span className={mode === ENG ? 'active' : ''} onClick={onChangeLanguage(ENG)}>ENG </span>
             <span className="without-hover">{' | '}</span>
-            <span className={language === RUS ? 'active' : ''} onClick={onChangeLanguage(RUS)}>RUS</span>
-            <span className="without-hover">, {wordsLength}</span>
+            <span className={mode === RUS ? 'active' : ''} onClick={onChangeLanguage(RUS)}>RUS</span>
+            <span className="without-hover">{' | '}</span>
+            <span className={mode === PHOTO ? 'active' : ''} onClick={onChangeLanguage(PHOTO)}>PHOTOS</span>
+            <span className="without-hover">, {mode === PHOTO ? wordsWithPhotoLength : wordsLength}</span>
         </LanguagesContainerElement>
     </WordBlockHeaderContainerElement>
 
