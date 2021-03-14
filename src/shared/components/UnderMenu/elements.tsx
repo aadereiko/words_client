@@ -8,8 +8,9 @@ export const UnderMenuContainerElement = styled.div`
   min-height: 50px;
   background-color: white;
   border-radius: 10px;
-  z-index: 20;
-  top: 60px;
+  z-index: 30;
+  /* top: 60px; */
+  transform: translateY(5px);
   padding: 10px 0px;
   animation: ${appearingKeyframe()} 0.3s;
 `;

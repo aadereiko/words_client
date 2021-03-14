@@ -4,8 +4,7 @@ import { logoutUserAction } from '../../store/user/sagas';
 import { selectCurrentUserFullName } from '../../store/user/selectors';
 import { createWordAction, createWordsSetAction } from '../../store/wordsSet/sagas';
 import { selectCurrentUserSetShortList } from '../../store/wordsSet/selectors';
-import { IAddWordSchema } from '../shared';
-import { IAddSetSchema } from './AddForms/schemas';
+import { IAddWordSchema, IAddSetSchema } from '../shared';
 import { Header } from './Header';
 
 interface IHeaderContainerProps {
@@ -36,4 +35,4 @@ export const HeaderContainer: React.FC<IHeaderContainerProps> = () => {
         onAddWord={onAddWord}
         setsList={currentUserShortSetsList}
     />
-}  
+}

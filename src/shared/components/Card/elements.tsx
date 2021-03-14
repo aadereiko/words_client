@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import generalStyles from '../../styles/general';
+import { ReactComponent as DotIcon } from '../../assets/icons/dots.svg';
 
 export const CardContainerElement = styled.div`
     padding: 5px;
@@ -10,6 +11,7 @@ export const CardContainerElement = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 20px;
+    position: relative;
     border: 1px solid ${generalStyles.primaryBlueColor};
     background-color: ${generalStyles.lighterBlueBackgroundColor};
 
@@ -38,3 +40,16 @@ export const ExtraTextContainerElement = styled.div`
     color: ${generalStyles.grayPrimaryColor};
     font-size: 12px;
 `;
+
+export const CardIconContainerElement = styled.div`
+  position: absolute;
+  top: 2px;
+  right: 10px;
+`;
+
+export const CardDotIconElement = styled(DotIcon)`
+  fill: ${generalStyles.primaryBlueColor};
+  &:hover {
+    opacity: 0.7;
+  }
+`

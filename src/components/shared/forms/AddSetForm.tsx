@@ -8,13 +8,14 @@ export interface IAddSetFormProps {
     isOpened: boolean;
     toggleStatus: () => void;
     onSave: (values: IAddSetSchema) => void;
+    initValues?: IAddSetSchema;
     onEsc: () => void;
 }
 
-const AddSetForm: React.FC<IAddSetFormProps> = ({ isOpened, toggleStatus, onSave, onEsc }) => {
+const AddSetForm: React.FC<IAddSetFormProps> = ({ isOpened, toggleStatus, onSave, onEsc, initValues = addSetSchema}) => {
     const handleSave = useCallback((values) => () => onSave(values), [onSave])
 
-    return isOpened && <Formik initialValues={addSetSchema} onSubmit={onSave} validate={addSetValidate} >
+    return isOpened && <Formik initialValues={initValues} onSubmit={onSave} validate={addSetValidate} >
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) =>
             <Modal
                 onEsc={onEsc}

@@ -1,4 +1,4 @@
-import { IWordSetCreateResponse, IWordsSet, IWordsServerSet, ILoadSelectedSetReq, IFullWordsServerSet, IWord, IWordServer, IActionWordInSetProps, IWordWithId } from './types';
+import { IWordSetCreateResponse, IWordsSet, IWordsServerSet, ILoadSelectedSetReq, IFullWordsServerSet, IWord, IWordServer, IActionWordInSetProps, IWordWithId, IWordsSetWithId } from './types';
 import { requestAPI, IResponse, handleResponseSnackbar } from './../../services/request';
 import { createAction } from '@reduxjs/toolkit';
 import { call, takeEvery, put } from 'redux-saga/effects';
@@ -13,6 +13,7 @@ export const loadSelectedSetAction = createAction<ILoadSelectedSetReq>('wordsSet
 export const copyToSetAction = createAction<IActionWordInSetProps>('wordsSet/copyToSet');
 export const removeFromSetAction = createAction<IActionWordInSetProps>('wordsSet/removeFromSet');
 export const updateWordAction = createAction<IWordWithId>('wordsSet/updateWord');
+export const updateSetAction = createAction<IWordsSetWithId>('wordsSet/updateSet');
 
 function* createWordsSet({ payload }: ReturnType<typeof createWordsSetAction>) {
     const resp: IResponse<IWordSetCreateResponse> = yield call(requestAPI, '/sets', {
@@ -79,6 +80,20 @@ function* updateWord({ payload }: ReturnType<typeof updateWordAction>) {
     yield put(handleResponseSnackbar(resp));
 }
 
+
+function* updateSet({ payload }: ReturnType<typeof updateSetAction>) {
+    console.log(payload);
+    const { setId, ...body } = payload;
+    const resp: IResponse<IWord> = yield call(requestAPI, `/sets/${setId}`, {
+        method: 'PATCH',
+        body,
+    });
+
+    yield put(handleResponseSnackbar(resp));
+}
+
+
+
 export default [
     takeEvery(createWordsSetAction, createWordsSet),
     takeEvery(loadAllUserSetsAction, loadAllUserSets),
@@ -86,5 +101,6 @@ export default [
     takeEvery(createWordAction, createWord),
     takeEvery(copyToSetAction, copyToSet),
     takeEvery(removeFromSetAction, removeFromSet),
-    takeEvery(updateWordAction, updateWord)
+    takeEvery(updateWordAction, updateWord),
+    takeEvery(updateSetAction, updateSet)
 ];

@@ -3,6 +3,11 @@ export interface IWordsSet {
     description?: string;
 }
 
+export interface IWordsSetWithId extends IWordsSet {
+    setId: string;
+}
+
+
 export type IWordSetType = 'SYSTEM' | 'CUSTOM';
 export const WordSetTypes = {
     SYSTEM: 'SYSTEM',

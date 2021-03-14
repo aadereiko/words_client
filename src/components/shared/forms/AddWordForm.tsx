@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Formik } from 'formik';
 import { ImageView, Input, Modal, Select, TextButton } from '../../../shared';
-import { AddFormElement, AddFormConatinerElement, TranslationBlockElement } from '../../Header/AddForms/elements';
+import { AddFormElement, AddFormConatinerElement, TranslationBlockElement } from './elements';
 import { IWordsShortServerSet } from '../../../store/wordsSet/types';
 import { addWordSchema, addWordValidate, IAddWordSchema } from './schemas';
 
@@ -54,7 +54,7 @@ const AddWordForm: React.FC<IAddWordFormProps> = ({ isOpened, toggleStatus, onSa
                                 text="Translate with CR"
                             />
                         </TranslationBlockElement>
-                       {withSet && <Select
+                        {withSet && <Select
                             label="Set *"
                             id="setId"
                             name="setId"

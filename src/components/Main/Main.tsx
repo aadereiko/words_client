@@ -6,16 +6,12 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import Header from '../Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUserAction, logoutUserAction } from '../../store/user/sagas';
-import { selectCurrentUserFullName, selectIsAuth } from '../../store/user/selectors';
-import { LoginPage } from '../LoginPage';
+import { loadUserAction } from '../../store/user/sagas';
+import { selectIsAuth } from '../../store/user/selectors';
 import { appAuthRoutes, appNotAuthRoutes } from './routes-config';
 import HeaderContainer from '../Header';
 import Snackbar from '../Snackbar';
-import { loadAllUserSetsAction } from '../../store/wordsSet/sagas';
-
 const MainWrapper = styled.div`
     height: 100%;
 `
